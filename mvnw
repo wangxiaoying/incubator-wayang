@@ -313,4 +313,6 @@ exec "$JAVACMD" \
   -classpath "$MAVEN_PROJECTBASEDIR/.mvn/wrapper/maven-wrapper.jar" \
   "-Dmaven.home=${M2_HOME}" \
   "-Dmaven.multiModuleProjectDirectory=${MAVEN_PROJECTBASEDIR}" \
+  "-Dhttp.proxyHost=127.0.0.1" "-Dhttp.proxyPort=3128" \
+  "-Dhttps.proxyHost=127.0.0.1" "-Dhttps.proxyPort=3128" \
   ${WRAPPER_LAUNCHER} $MAVEN_CONFIG "$@"

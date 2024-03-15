@@ -82,7 +82,8 @@ class Query1(plugins: Plugin*) extends ExperimentDescriptor {
       .withName("Load LINEITEM table")
 
       .filter(t => CsvUtils.parseDate(t.getString(10)) <= CsvUtils.parseDate("1998-12-01") - _delta,
-        sqlUdf = s"date(l_shipdate) <= date('1998-12-01', '- ${_delta} day')", selectivity = .25)
+        sqlUdf = s"date(l_shipdate) <= date('1998-12-01') - interval '${_delta}' day", selectivity = .25)
+        // sqlUdf = s"date(l_shipdate) <= date('1998-12-01', '- ${_delta} day')", selectivity = .25)
       .withName("Filter line items")
 
       .projectRecords(Seq("l_returnflag", "l_linestatus", "l_quantity", "l_extendedprice", "l_discount", "l_tax"))
