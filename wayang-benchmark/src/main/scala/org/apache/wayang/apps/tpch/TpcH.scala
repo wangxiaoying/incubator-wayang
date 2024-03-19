@@ -87,29 +87,41 @@ object TpcH {
         experiment = Parameters.createExperiment(experimentArg, query)
         experiment.getSubject.addConfiguration("plugins", args(1))
         experiment.getSubject.addConfiguration("query", args(3))
+        val start = System.currentTimeMillis
         val result = query(configuration, jdbcPlatform, createTableSource)(experiment)
+        val end = System.currentTimeMillis
         StdOut.printLimited(result, 10)
+        StdOut.printLimited("Time in total (ms): " + (end - start))
       case "Q3File" =>
         val query = new Query3File(plugins: _*)
         experiment = Parameters.createExperiment(experimentArg, query)
         experiment.getSubject.addConfiguration("plugins", args(1))
         experiment.getSubject.addConfiguration("query", args(3))
+        val start = System.currentTimeMillis
         val result = query(configuration)(experiment)
+        val end = System.currentTimeMillis
         StdOut.printLimited(result, 10)
+        StdOut.printLimited("Time in total (ms): " + (end - start))
       case "Q3" =>
         val query = new Query3Database(plugins: _*)
         experiment = Parameters.createExperiment(experimentArg, query)
         experiment.getSubject.addConfiguration("plugins", args(1))
         experiment.getSubject.addConfiguration("query", args(3))
+        val start = System.currentTimeMillis
         val result = query(configuration, jdbcPlatform, createTableSource)(experiment)
+        val end = System.currentTimeMillis
         StdOut.printLimited(result, 10)
+        StdOut.printLimited("Time in total (ms): " + (end - start))
       case "Q3Hybrid" =>
         val query = new Query3Hybrid(plugins: _*)
         experiment = Parameters.createExperiment(experimentArg, query)
         experiment.getSubject.addConfiguration("plugins", args(1))
         experiment.getSubject.addConfiguration("query", args(3))
+        val start = System.currentTimeMillis
         val result = query(configuration, jdbcPlatform, createTableSource)(experiment)
+        val end = System.currentTimeMillis
         StdOut.printLimited(result, 10)
+        StdOut.printLimited("Time in total (ms): " + (end - start))
       case other: String => {
         println(s"Unknown query: $other")
         sys.exit(1)
