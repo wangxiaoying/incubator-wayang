@@ -746,7 +746,7 @@ class DataQuanta[Out: ClassTag](val operator: ElementaryOperator, outputIndex: I
     *
     * @return the data quanta
     */
-  def collect(): Iterable[Out] = {
+  def collect(doExplain: Boolean = false): Iterable[Out] = {
     // Set up the sink.
     val collector = new java.util.LinkedList[Out]()
     val sink = LocalCallbackSink.createCollectingSink(collector, dataSetType[Out])
@@ -755,7 +755,7 @@ class DataQuanta[Out: ClassTag](val operator: ElementaryOperator, outputIndex: I
 
     // Do the execution.
     this.planBuilder.sinks += sink
-    this.planBuilder.buildAndExecute()
+    this.planBuilder.buildAndExecute(doExplain)
     this.planBuilder.sinks.clear()
 
     // Return the collected values.

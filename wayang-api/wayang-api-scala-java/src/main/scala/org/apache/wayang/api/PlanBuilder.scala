@@ -100,8 +100,13 @@ class PlanBuilder(wayangContext: WayangContext, private var jobName: String = nu
   /**
     * Build the [[org.apache.wayang.core.api.Job]] and execute it.
     */
-  def buildAndExecute(): Unit = {
+  def buildAndExecute(doExplain: Boolean = false): Unit = {
     val plan: WayangPlan = new WayangPlan(this.sinks.toArray: _*)
+
+    if (doExplain) {
+      Utils.PrintPlan("[plan]", plan)
+    }
+
     if (this.experiment == null) this.wayangContext.execute(jobName, plan, this.udfJars.toArray: _*)
     else this.wayangContext.execute(jobName, plan, this.experiment, this.udfJars.toArray: _*)
   }

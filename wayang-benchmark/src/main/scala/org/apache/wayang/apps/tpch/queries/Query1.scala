@@ -133,7 +133,7 @@ class Query1(plugins: Plugin*) extends ExperimentDescriptor {
         result.count_order
       ))
       .withName("Post-process line item aggregates")
-      .collect()
+      .collect(true) // explain the plan
 
     result
   }
