@@ -91,7 +91,8 @@ object TpcH {
         val result = query(configuration, jdbcPlatform, createTableSource)(experiment)
         val end = System.currentTimeMillis
         StdOut.printLimited(result, 10)
-        StdOut.printLimited("Time in total (ms): " + (end - start))
+        val elapsed = end - start;
+        println(s"Time in total (ms): $elapsed")
       case "Q3File" =>
         val query = new Query3File(plugins: _*)
         experiment = Parameters.createExperiment(experimentArg, query)
@@ -101,7 +102,8 @@ object TpcH {
         val result = query(configuration)(experiment)
         val end = System.currentTimeMillis
         StdOut.printLimited(result, 10)
-        StdOut.printLimited("Time in total (ms): " + (end - start))
+        val elapsed = end - start;
+        println(s"Time in total (ms): $elapsed")
       case "Q3" =>
         val query = new Query3Database(plugins: _*)
         experiment = Parameters.createExperiment(experimentArg, query)
@@ -111,7 +113,8 @@ object TpcH {
         val result = query(configuration, jdbcPlatform, createTableSource)(experiment)
         val end = System.currentTimeMillis
         StdOut.printLimited(result, 10)
-        StdOut.printLimited("Time in total (ms): " + (end - start))
+        val elapsed = end - start;
+        println(s"Time in total (ms): $elapsed")
       case "Q3Hybrid" =>
         val query = new Query3Hybrid(plugins: _*)
         experiment = Parameters.createExperiment(experimentArg, query)
@@ -121,7 +124,8 @@ object TpcH {
         val result = query(configuration, jdbcPlatform, createTableSource)(experiment)
         val end = System.currentTimeMillis
         StdOut.printLimited(result, 10)
-        StdOut.printLimited("Time in total (ms): " + (end - start))
+        val elapsed = end - start;
+        println(s"Time in total (ms): $elapsed")
       case other: String => {
         println(s"Unknown query: $other")
         sys.exit(1)
