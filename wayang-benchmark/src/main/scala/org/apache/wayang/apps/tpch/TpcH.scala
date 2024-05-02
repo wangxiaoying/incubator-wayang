@@ -18,7 +18,7 @@
 
 package org.apache.wayang.apps.tpch
 
-import org.apache.wayang.apps.tpch.queries.{Query1, Query3Database, Query3File, Query3Hybrid}
+import org.apache.wayang.apps.tpch.queries.{Query1, Query3Database, Query3File, Query3Hybrid, QueryTest, QueryTest2}
 import org.apache.wayang.apps.util.{Parameters, ProfileDBHelper, StdOut}
 import org.apache.wayang.commons.util.profiledb.model.Experiment
 import org.apache.wayang.core.api.Configuration
@@ -77,11 +77,34 @@ object TpcH {
         throw new IllegalArgumentException(s"Unsupported database: $jdbcPlatform.")
       }
 
-    val configuration = new Configuration
-    configuration.load(configUrl)
+
+    println(configUrl)
+    val configuration = new Configuration(configUrl)
 
     var experiment: Experiment = null
     queryName match {
+      case "Test" =>
+        val query = new QueryTest(plugins: _*)
+        experiment = Parameters.createExperiment(experimentArg, query)
+        experiment.getSubject.addConfiguration("plugins", args(1))
+        experiment.getSubject.addConfiguration("query", args(3))
+        val start = System.currentTimeMillis
+        val result = query(configuration, jdbcPlatform, createTableSource)(experiment)
+        val end = System.currentTimeMillis
+        StdOut.printLimited(result, 10)
+        val elapsed = end - start;
+        println(s"Time in total (ms): $elapsed")
+      case "Test2" =>
+        val query = new QueryTest2(plugins: _*)
+        experiment = Parameters.createExperiment(experimentArg, query)
+        experiment.getSubject.addConfiguration("plugins", args(1))
+        experiment.getSubject.addConfiguration("query", args(3))
+        val start = System.currentTimeMillis
+        val result = query(configuration, jdbcPlatform, createTableSource)(experiment)
+        val end = System.currentTimeMillis
+        StdOut.printLimited(result, 10)
+        val elapsed = end - start;
+        println(s"Time in total (ms): $elapsed")
       case "Q1" =>
         val query = new Query1(plugins: _*)
         experiment = Parameters.createExperiment(experimentArg, query)

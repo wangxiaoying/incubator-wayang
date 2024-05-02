@@ -85,7 +85,9 @@ public class SparkPlatform extends Platform {
             "spark.io.compression.codec",
             "spark.driver.memory",
             "spark.executor.heartbeatInterval",
-            "spark.network.timeout"
+            "spark.network.timeout",
+            "spark.log.level",
+            "spark.rdd.compress"
             // "spark.extraListeners"
     };
 

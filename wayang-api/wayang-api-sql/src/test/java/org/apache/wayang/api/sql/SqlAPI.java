@@ -156,6 +156,25 @@ public class SqlAPI {
         printResults(10, result);
     }
 
+    public static void exampleTPCHWithPostgres() throws Exception {
+        Configuration configuration = new Configuration();
+        configuration.setProperty("wayang.postgres.jdbc.url", "jdbc:postgresql://10.155.96.80:5432/tpch");
+        configuration.setProperty("wayang.postgres.jdbc.user", "postgres");
+        configuration.setProperty("wayang.postgres.jdbc.password", "postgres");
+
+        String calciteModel = Resources.toString(
+                SqlAPI.class.getResource("/tpch.json"),
+                Charset.defaultCharset());
+        configuration.setProperty("wayang.calcite.model", calciteModel);
+        SqlContext sqlContext = new SqlContext(configuration);
+
+        Collection<Record> result = sqlContext.executeSql(
+                "SELECT r_name, n_name from postgres.nation join postgres.region on r_regionkey = n_regionkey where n_nationkey > 5"
+        );
+
+        printResults(10, result);
+    }
+
     public static void main(String... args) throws Exception {
 //        BasicConfigurator.configure();
 //        new SqlAPI().examplePostgres();
@@ -165,7 +184,8 @@ public class SqlAPI {
 //        new SqlAPI().exampleCrossPlatform();
         long startTime = System.nanoTime();
 
-        new SqlAPI().exampleAggregateWithPostgres();
+//        new SqlAPI().exampleAggregateWithPostgres();
+        new SqlAPI().exampleTPCHWithPostgres();
 
         long endTime = System.nanoTime();
         long duration = (endTime - startTime);

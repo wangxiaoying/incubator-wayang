@@ -72,6 +72,8 @@ public class SparkLocalCallbackSink<T extends Serializable> extends LocalCallbac
         final JavaRDD<T> inputRdd = input.provideRdd();
         inputRdd.toLocalIterator().forEachRemaining(this.callback);
 
+        System.out.println("[SparkLocalCallbackSink] " + inputRdd.toDebugString());
+
         return ExecutionOperator.modelEagerExecution(inputs, outputs, operatorContext);
     }
 

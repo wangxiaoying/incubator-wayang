@@ -164,7 +164,7 @@ class Query3Database(plugins: Plugin*) extends ExperimentDescriptor {
         }
       )
       .withName("Aggregate revenue")
-      .collect()
+      .collect(true)
   }
 
 }

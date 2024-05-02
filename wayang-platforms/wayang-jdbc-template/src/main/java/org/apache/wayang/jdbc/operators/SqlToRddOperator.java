@@ -89,7 +89,7 @@ public class SqlToRddOperator extends UnaryToUnaryOperator<Record, Record> imple
         Iterator<Record> resultSetIterator = new SqlToStreamOperator.ResultSetIterator(connection, input.getSqlQuery());
         Iterable<Record> resultSetIterable = () -> resultSetIterator;
 
-        // Convert the ResultSet to a JavaRDD.
+        // Convert the ResultSet to a JavaRDD
         JavaRDD<Record> resultSetRDD = executor.sc.parallelize(
                 StreamSupport.stream(resultSetIterable.spliterator(), false).collect(Collectors.toList()),
                 executor.getNumDefaultPartitions()

@@ -86,6 +86,7 @@ public class SparkMapOperator<InputType, OutputType>
                 sparkExecutor.getCompiler().compile(this.functionDescriptor, this, operatorContext, inputs);
         final JavaRDD<OutputType> outputRdd = inputRdd.map(mapFunctions);
         this.name(outputRdd);
+        System.out.println("[SparkMap] " + outputRdd.toDebugString());
 
         output.accept(outputRdd, sparkExecutor);
 

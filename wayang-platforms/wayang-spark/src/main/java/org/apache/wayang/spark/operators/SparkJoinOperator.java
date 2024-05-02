@@ -18,6 +18,7 @@
 
 package org.apache.wayang.spark.operators;
 
+import org.apache.spark.HashPartitioner;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.function.Function;
@@ -91,17 +92,19 @@ public class SparkJoinOperator<InputType0, InputType1, KeyType>
         FunctionCompiler compiler = sparkExecutor.getCompiler();
         final PairFunction<InputType0, KeyType, InputType0> keyExtractor0 = compiler.compileToKeyExtractor(this.keyDescriptor0);
         final PairFunction<InputType1, KeyType, InputType1> keyExtractor1 = compiler.compileToKeyExtractor(this.keyDescriptor1);
-        JavaPairRDD<KeyType, InputType0> pairStream0 = inputRdd0.mapToPair(keyExtractor0);
-        JavaPairRDD<KeyType, InputType1> pairStream1 = inputRdd1.mapToPair(keyExtractor1);
+        JavaPairRDD<KeyType, InputType0> pairStream0 = inputRdd0.mapToPair(keyExtractor0).partitionBy(new HashPartitioner(sparkExecutor.getNumDefaultPartitions()));
+        JavaPairRDD<KeyType, InputType1> pairStream1 = inputRdd1.mapToPair(keyExtractor1).partitionBy(new HashPartitioner(sparkExecutor.getNumDefaultPartitions()));
 
         final JavaPairRDD<KeyType, scala.Tuple2<InputType0, InputType1>> outputPair =
-                pairStream0.<InputType1>join(pairStream1, sparkExecutor.getNumDefaultPartitions());
+            pairStream0.<InputType1>join(pairStream1, sparkExecutor.getNumDefaultPartitions());
         this.name(outputPair);
 
         // convert from scala tuple to wayang tuple
         final JavaRDD<Tuple2<InputType0, InputType1>> outputRdd = outputPair
                 .map(new TupleConverter<>());
         this.name(outputRdd);
+
+        System.out.println("[SparkJoin] " + outputRdd.toDebugString());
 
         output.accept(outputRdd, sparkExecutor);
 

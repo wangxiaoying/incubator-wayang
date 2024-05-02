@@ -99,6 +99,7 @@ public class SparkReduceByOperator<Type, KeyType>
         this.name(reducedPairRdd);
         final JavaRDD<Type> outputRdd = reducedPairRdd.map(new TupleConverter<>());
         this.name(outputRdd);
+        System.out.println("[SparkReduceBy] " + outputRdd.toDebugString());
 
         output.accept(outputRdd, sparkExecutor);
 

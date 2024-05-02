@@ -108,6 +108,7 @@ public class SparkExecutor extends PushExecutorTemplate {
         // TODO: Use proper progress estimator.
         this.job.reportProgress(task.getOperator().getName(), 50);
 
+        System.out.println("before start " + task + " with config:\n" + this.sc.getConf().toDebugString());
         long startTime = System.currentTimeMillis();
         try {
             final Tuple<Collection<ExecutionLineageNode>, Collection<ChannelInstance>> results =
@@ -125,6 +126,7 @@ public class SparkExecutor extends PushExecutorTemplate {
         }
         long endTime = System.currentTimeMillis();
         long executionDuration = endTime - startTime;
+        System.out.println("Spark execution duration for task " + task + " is " + executionDuration + " ms");
         this.job.reportProgress(task.getOperator().getName(), 100);
 
         // Check how much we executed.

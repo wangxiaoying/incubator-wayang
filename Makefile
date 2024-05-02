@@ -32,3 +32,7 @@ build-bench:
 build-api-scala-java:
 	./mvnw clean package install -pl :wayang-api-scala-java -DskipTests
 	cp wayang-api/wayang-api-scala-java/target/apache-wayang-api-scala-java-1.0.0-SNAPSHOT-incubating.jar ./install/wayang-1.0.0-SNAPSHOT/jars/wayang-api-scala-java-1.0.0-SNAPSHOT.jar
+
+build-spark:
+	./mvnw clean package install -pl :wayang-spark -DskipTests
+	cp wayang-platforms/wayang-spark/target/apache-wayang-spark-1.0.0-SNAPSHOT-incubating.jar install/wayang-1.0.0-SNAPSHOT/jars/wayang-spark-1.0.0-SNAPSHOT.jar

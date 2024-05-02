@@ -160,7 +160,7 @@ class Query3Hybrid(plugins: Plugin*) extends ExperimentDescriptor {
         }
       )
       .withName("Aggregate revenue")
-      .collect()
+      .collect(true)
   }
 
 }
