@@ -18,7 +18,7 @@
 
 package org.apache.wayang.apps.tpch
 
-import org.apache.wayang.apps.tpch.queries.{Query1, Query3Database, Query3File, Query3Hybrid}
+import org.apache.wayang.apps.tpch.queries.{Query1, Query3Database, Query3File, Query3Hybrid, Query5Database}
 import org.apache.wayang.apps.util.{Parameters, ProfileDBHelper, StdOut}
 import org.apache.wayang.commons.util.profiledb.model.Experiment
 import org.apache.wayang.core.api.Configuration
@@ -98,6 +98,13 @@ object TpcH {
         StdOut.printLimited(result, 10)
       case "Q3" =>
         val query = new Query3Database(plugins: _*)
+        experiment = Parameters.createExperiment(experimentArg, query)
+        experiment.getSubject.addConfiguration("plugins", args(1))
+        experiment.getSubject.addConfiguration("query", args(3))
+        val result = query(configuration, jdbcPlatform, createTableSource)(experiment)
+        StdOut.printLimited(result, 10)
+      case "Q5" =>
+        val query = new Query5Database(plugins: _*)
         experiment = Parameters.createExperiment(experimentArg, query)
         experiment.getSubject.addConfiguration("plugins", args(1))
         experiment.getSubject.addConfiguration("query", args(3))

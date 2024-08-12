@@ -22,7 +22,6 @@ import org.apache.wayang.apps.tpch.CsvUtils
 import org.apache.wayang.apps.tpch.data.{Customer, LineItem, Order}
 import org.apache.wayang.apps.util.ExperimentDescriptor
 import org.apache.wayang.api._
-import org.apache.wayang.apps.tpch.data.LineItem
 import org.apache.wayang.commons.util.profiledb.model.Experiment
 import org.apache.wayang.core.api.{Configuration, WayangContext}
 import org.apache.wayang.core.plugin.Plugin
@@ -107,7 +106,7 @@ class Query3Database(plugins: Plugin*) extends ExperimentDescriptor {
       .load(createTableSource(withSchema("ORDERS"), Order.fields))
       .withName("Load ORDERS table")
 
-      .filter(t => CsvUtils.parseDate(t.getString(4)) > _date, sqlUdf = s"o_orderdate < date('$date')")
+      .filter(t => CsvUtils.parseDate(t.getString(4)) < _date, sqlUdf = s"o_orderdate < date('$date')")
       .withName("Filter orders")
 
       .projectRecords(Seq("o_orderkey", "o_custkey", "o_orderdate", "o_shippriority"))
@@ -160,10 +159,14 @@ class Query3Database(plugins: Plugin*) extends ExperimentDescriptor {
         t => (t.orderKey, t.orderDate, t.shipPriority),
         (t1, t2) => {
           t1.revenue += t2.revenue;
-          t2
+          t1
         }
       )
       .withName("Aggregate revenue")
+
+      .sort[Double](t => t.revenue)
+      .withName("Sort revenue and date")
+
       .collect()
   }
 
